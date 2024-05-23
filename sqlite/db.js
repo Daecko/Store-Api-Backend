@@ -116,9 +116,9 @@ export const insertUser = (displayName, email, password) => {
       client.query(
         ADD_USER,
         [displayName, email, password],
-        (err, result) => {
-          done(); // Release the client back to the pool
+        (err) => {
           if (err) {
+            done(); // Release the client back to the pool
             reject(err);
             return;
           }
