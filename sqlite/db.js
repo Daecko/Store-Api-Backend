@@ -9,7 +9,7 @@ const dbPath = config.DB.path;
 export const getCollections = () => {
   const data = [];
   return new Promise((resolve, reject) => {
-    let db = new sqlite3.Database(__dirname + dbPath);
+    let db = new sqlite3.Database(dbPath);
     console.log(db)
     console.log(new sqlite3.Database(__dirname + dbPath))
     console.log(path.resolve(__dirname,dbPath))
