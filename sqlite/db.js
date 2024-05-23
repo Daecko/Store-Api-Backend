@@ -114,7 +114,7 @@ export const insertUser = (displayName, email, password) => {
         return;
       }
       client.query(
-        `${ADD_USER} RETURNING id`,
+        ADD_USER,
         [displayName, email, password],
         (err, result) => {
           done(); // Release the client back to the pool
@@ -122,7 +122,14 @@ export const insertUser = (displayName, email, password) => {
             reject(err);
             return;
           }
-          resolve(result.rows[0].id);
+          client.query(LAST_ID, [], (err, result) => {
+            done(); // Release the client back to the pool
+            if (err) {
+              reject(err);
+              return;
+            }
+            resolve(result.rows[0].id); // Get the ID of the newly inserted user
+          });
         }
       );
     });
