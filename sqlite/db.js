@@ -16,7 +16,7 @@ const pool = new Pool({
   connectionString: "postgres://default:kbm3hI4JzeLU@ep-round-hat-a4g03w1q-pooler.us-east-1.aws.neon.tech:5432/verceldb?sslmode=require?sslmode=require",
 });
 
-const getCollections = () => {
+export const getCollections = () => {
   const data = [];
   return new Promise((resolve, reject) => {
     pool.connect((err, client, done) => {
@@ -48,9 +48,6 @@ const getCollections = () => {
   });
 };
 
-module.exports = {
-  getCollections,
-};
 /* export const getCollections = () => {
   const data = [];
   return new Promise((resolve, reject) => {
