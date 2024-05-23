@@ -1,5 +1,5 @@
 import sqlite3 from "sqlite3";
-import config from "config";
+import config from "../config/default.json";
 import { ADD_USER, COLLECTIONS, IS_MAIL_REGISTERED, LAST_ID, USER_BY_EMAIL, USER_BY_ID } from "./queries.js";
 
 const dbPath = config.get("DB.path");
