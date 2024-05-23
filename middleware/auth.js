@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import config from "config";
+const config = require("config");
 import { errorResponse } from "../utility/utils.js";
 
 export function auth(req, res, next) {

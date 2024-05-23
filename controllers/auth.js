@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import config from "config";
+const config = require("config");
 import { isEmailRegistered, insertUser, getUserByEmail, getUserById } from "../sqlite/db.js";
 import { errorResponse, successResponse } from "../utility/utils.js";
 
