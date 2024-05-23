@@ -4,7 +4,7 @@ const config = require("../config/default.json")
 import { ADD_USER, COLLECTIONS, IS_MAIL_REGISTERED, LAST_ID, USER_BY_EMAIL, USER_BY_ID } from "./queries.js";
 
 const path = require('path');
-const dbPath = config.get("DB.path");
+const dbPath = config.DB.path;
 
 export const getCollections = () => {
   const data = [];
