@@ -1,20 +1,13 @@
 import sqlite3 from "sqlite3";
-const config = require("../config/default.json")
-/* import config from "../config/default.json"; */
+import config from "../config/default.json" with { type:"json" };
 import { ADD_USER, COLLECTIONS, IS_MAIL_REGISTERED, LAST_ID, USER_BY_EMAIL, USER_BY_ID } from "./queries.js";
 
-const path = require('path');
 const dbPath = config.DB.path;
 
 export const getCollections = () => {
   const data = [];
   return new Promise((resolve, reject) => {
-    let db = new sqlite3.Database(dbPath);
-    console.log(__dirname)
-    console.log(__filename)
-    console.log(dbPath)
-    console.log(path.resolve(__dirname,dbPath))
-    console.log(path.resolve(__filename,dbPath))
+    let db = new sqlite3.Database(path.resolve(__dirname,dbPath));
     /* let db = new sqlite3.Database(dbPath); */
     db.all(COLLECTIONS, [], (err, rows) => {
       if (err) {

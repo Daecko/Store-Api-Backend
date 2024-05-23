@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-const config = require("../config/default.json");
+import config from "../config/default.json" with { type:"json" };
 /* import config from "../config/default.json"; */
 import { errorResponse } from "../utility/utils.js";
 
