@@ -4,6 +4,6 @@
     "tokenExp": 259200
   },
   "DB": {
-    "path": "../sqlite/crown_store.db"
+    "path": "./sqlite/crown_store.db"
   }
 }
