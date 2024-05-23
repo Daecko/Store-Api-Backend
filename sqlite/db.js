@@ -4,6 +4,7 @@ import pg from 'pg';
 import path from "path";
 import { fileURLToPath } from 'url';
 import { dirname } from "path"; */
+import {} from 'dotenv/config'
 import { ADD_USER, COLLECTIONS, IS_MAIL_REGISTERED, LAST_ID, USER_BY_EMAIL, USER_BY_ID } from "./queries.js";
 
 const { Pool } = pg
@@ -13,7 +14,7 @@ const dbPath = config.DB.path; */
 
 const pool = new Pool({
   /* PostgreSQL connection configuration */
-  connectionString: "postgres://default:kbm3hI4JzeLU@ep-round-hat-a4g03w1q-pooler.us-east-1.aws.neon.tech:5432/verceldb?sslmode=require?sslmode=require",
+  connectionString: process.env.POSTGRES_URL,
 });
 
 export const getCollections = () => {
