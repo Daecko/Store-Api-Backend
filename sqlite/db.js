@@ -34,7 +34,7 @@ export const getCollections = () => {
 
 export const isEmailRegistered = (email) => {
   return new Promise((resolve, reject) => {
-    let db = new sqlite3.Database(dbPath);
+    let db = new sqlite3.Database(path.resolve(__dirname,dbPath));
     db.get(IS_MAIL_REGISTERED, [email], (err, row) => {
       if (err) {
         reject(err);
@@ -49,7 +49,7 @@ export const isEmailRegistered = (email) => {
 
 export const getUserByEmail = (email) => {
   return new Promise((resolve, reject) => {
-    let db = new sqlite3.Database(dbPath);
+    let db = new sqlite3.Database(path.resolve(__dirname,dbPath));
     db.get(USER_BY_EMAIL, [email], (err, row) => {
       if (err) {
         reject(err);
@@ -63,7 +63,7 @@ export const getUserByEmail = (email) => {
 
 export const getUserById = (id) => {
   return new Promise((resolve, reject) => {
-    let db = new sqlite3.Database(dbPath);
+    let db = new sqlite3.Database(path.resolve(__dirname,dbPath));
     db.get(USER_BY_ID, [id], (err, row) => {
       if (err) {
         reject(err);
@@ -77,7 +77,7 @@ export const getUserById = (id) => {
 
 export const insertUser = (displayName, email, password) => {
   return new Promise((resolve, reject) => {
-    let db = new sqlite3.Database(dbPath);
+    let db = new sqlite3.Database(path.resolve(__dirname,dbPath));
     db.run(ADD_USER, [displayName, email, password], (err) => {
       if (err) reject(err);
     }).get(LAST_ID, (err, row) => {
