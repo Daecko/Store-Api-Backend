@@ -14,3 +14,7 @@ node_modules
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+dump.sql
+export_sqlite.js
+import_db.js

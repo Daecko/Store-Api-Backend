@@ -1,7 +1,7 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
     "start": "nodemon index.js"
   },
@@ -16,6 +16,7 @@
     "express": "^4.17.1",
     "express-validator": "^6.12.1",
     "jsonwebtoken": "^8.5.1",
+    "pg": "^8.11.5",
     "sqlite3": "^5.0.2"
   }
 }
