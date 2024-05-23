@@ -1,11 +1,10 @@
 export function errorResponse(res, error, status = 400) {
+  console.log(res)
   return res.status(status).json({ success: false, message: error instanceof Error ? error.message : error });
-  /* return res.status(status).json({ success: false, message: error instanceof Error ? error.message : error }); */
 }
 
 export function successResponse(res, data, status = 200) {
   const retObject = { success: true };
   if (data) retObject.data = data;
-  return res.json(retObject);
-  /* return res.status(status).json(retObject); */
+  return res.status(status).json(retObject);
 }
