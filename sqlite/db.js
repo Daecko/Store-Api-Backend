@@ -1,9 +1,10 @@
 import sqlite3 from "sqlite3";
-import config from "../config/default.json";
+const config = require("../config/default.json")
+/* import config from "../config/default.json"; */
 import { ADD_USER, COLLECTIONS, IS_MAIL_REGISTERED, LAST_ID, USER_BY_EMAIL, USER_BY_ID } from "./queries.js";
 
 const path = require('path');
-const dbPath = config.DB.path;
+const dbPath = config.get("DB.path");
 
 export const getCollections = () => {
   const data = [];
