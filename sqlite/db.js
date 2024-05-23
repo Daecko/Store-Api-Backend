@@ -1,19 +1,60 @@
 import sqlite3 from "sqlite3";
+import pg from 'pg';
 import config from "../config/default.json" with { type:"json" };
 import path from "path";
 import { fileURLToPath } from 'url';
 import { dirname } from "path";
 import { ADD_USER, COLLECTIONS, IS_MAIL_REGISTERED, LAST_ID, USER_BY_EMAIL, USER_BY_ID } from "./queries.js";
 
+const { Pool } = pg
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const dbPath = config.DB.path;
 
-export const getCollections = () => {
+const pool = new Pool({
+  /* PostgreSQL connection configuration */
+  connectionString: "postgres://default:kbm3hI4JzeLU@ep-round-hat-a4g03w1q-pooler.us-east-1.aws.neon.tech:5432/verceldb?sslmode=require?sslmode=require",
+});
+
+const getCollections = () => {
+  const data = [];
+  return new Promise((resolve, reject) => {
+    pool.connect((err, client, done) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+      client.query(COLLECTIONS, (err, result) => {
+        done(); // Release the client back to the pool
+        if (err) {
+          reject(err);
+          return;
+        }
+        result.rows.forEach((row) => {
+          const { col_id, title, routeName, item_id, name, price, imageUrl } = row;
+          data.push({
+            col_id,
+            title,
+            routeName,
+            item_id,
+            name,
+            price,
+            imageUrl,
+          });
+        });
+        resolve(data);
+      });
+    });
+  });
+};
+
+module.exports = {
+  getCollections,
+};
+/* export const getCollections = () => {
   const data = [];
   return new Promise((resolve, reject) => {
     let db = new sqlite3.Database(path.join(process.cwd(),dbPath));
-    /* let db = new sqlite3.Database(dbPath); */
     db.all(COLLECTIONS, [], (err, rows) => {
       if (err) {
         reject(err);
@@ -35,7 +76,7 @@ export const getCollections = () => {
     });
     db.close();
   });
-};
+}; */
 
 export const isEmailRegistered = (email) => {
   return new Promise((resolve, reject) => {
