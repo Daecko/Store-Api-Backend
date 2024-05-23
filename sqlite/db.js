@@ -1,15 +1,15 @@
-import sqlite3 from "sqlite3";
+/* import sqlite3 from "sqlite3"; */
 import pg from 'pg';
-import config from "../config/default.json" with { type:"json" };
+/* import config from "../config/default.json" with { type:"json" };
 import path from "path";
 import { fileURLToPath } from 'url';
-import { dirname } from "path";
+import { dirname } from "path"; */
 import { ADD_USER, COLLECTIONS, IS_MAIL_REGISTERED, LAST_ID, USER_BY_EMAIL, USER_BY_ID } from "./queries.js";
 
 const { Pool } = pg
-const __filename = fileURLToPath(import.meta.url);
+/* const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const dbPath = config.DB.path;
+const dbPath = config.DB.path; */
 
 const pool = new Pool({
   /* PostgreSQL connection configuration */
@@ -48,89 +48,83 @@ export const getCollections = () => {
   });
 };
 
-/* export const getCollections = () => {
-  const data = [];
-  return new Promise((resolve, reject) => {
-    let db = new sqlite3.Database(path.join(process.cwd(),dbPath));
-    db.all(COLLECTIONS, [], (err, rows) => {
-      if (err) {
-        reject(err);
-      } else {
-        rows.forEach((row) => {
-          const { col_id, title, routeName, item_id, name, price, imageUrl } = row;
-          data.push({
-            col_id,
-            title,
-            routeName,
-            item_id,
-            name,
-            price,
-            imageUrl,
-          });
-        });
-        resolve(data);
-      }
-    });
-    db.close();
-  });
-}; */
-
 export const isEmailRegistered = (email) => {
   return new Promise((resolve, reject) => {
-    let db = new sqlite3.Database(path.resolve(__dirname,dbPath));
-    db.get(IS_MAIL_REGISTERED, [email], (err, row) => {
+    pool.connect((err, client, done) => {
       if (err) {
         reject(err);
-      } else {
-        const { exist } = row;
-        resolve(!!exist);
+        return;
       }
+      client.query(IS_MAIL_REGISTERED, [email], (err, result) => {
+        done(); // Release the client back to the pool
+        if (err) {
+          reject(err);
+          return;
+        }
+        const exist = result.rows[0].exist;
+        resolve(!!exist);
+      });
     });
-    db.close();
   });
 };
 
 export const getUserByEmail = (email) => {
   return new Promise((resolve, reject) => {
-    let db = new sqlite3.Database(path.resolve(__dirname,dbPath));
-    db.get(USER_BY_EMAIL, [email], (err, row) => {
+    pool.connect((err, client, done) => {
       if (err) {
         reject(err);
-      } else {
-        resolve(row);
+        return;
       }
+      client.query(USER_BY_EMAIL, [email], (err, result) => {
+        done(); // Release the client back to the pool
+        if (err) {
+          reject(err);
+          return;
+        }
+        resolve(result.rows[0]); // Assuming there's only one user with the given email
+      });
     });
-    db.close();
   });
 };
 
 export const getUserById = (id) => {
   return new Promise((resolve, reject) => {
-    let db = new sqlite3.Database(path.resolve(__dirname,dbPath));
-    db.get(USER_BY_ID, [id], (err, row) => {
+    pool.connect((err, client, done) => {
       if (err) {
         reject(err);
-      } else {
-        resolve(row);
+        return;
       }
+      client.query(USER_BY_ID, [id], (err, result) => {
+        done(); // Release the client back to the pool
+        if (err) {
+          reject(err);
+          return;
+        }
+        resolve(result.rows[0]); // Assuming there's only one user with the given id
+      });
     });
-    db.close();
   });
 };
 
 export const insertUser = (displayName, email, password) => {
   return new Promise((resolve, reject) => {
-    let db = new sqlite3.Database(path.resolve(__dirname,dbPath));
-    db.run(ADD_USER, [displayName, email, password], (err) => {
-      if (err) reject(err);
-    }).get(LAST_ID, (err, row) => {
+    pool.connect((err, client, done) => {
       if (err) {
         reject(err);
-      } else {
-        const { id } = row;
-        resolve(id);
+        return;
       }
+      client.query(
+        `${ADD_USER} RETURNING id`,
+        [displayName, email, password],
+        (err, result) => {
+          done(); // Release the client back to the pool
+          if (err) {
+            reject(err);
+            return;
+          }
+          resolve(result.rows[0].id);
+        }
+      );
     });
-    db.close();
   });
 };
