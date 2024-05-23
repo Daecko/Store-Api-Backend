@@ -10,6 +10,9 @@ export const getCollections = () => {
   const data = [];
   return new Promise((resolve, reject) => {
     let db = new sqlite3.Database(path.resolve(__dirname,dbPath));
+    console.log(db)
+    console.log(new sqlite3.Database(dbPath))
+    console.log(path.resolve(__dirname,dbPath))
     /* let db = new sqlite3.Database(dbPath); */
     db.all(COLLECTIONS, [], (err, rows) => {
       if (err) {
