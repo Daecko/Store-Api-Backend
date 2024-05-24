@@ -32,7 +32,7 @@ export const getCollections = () => {
           return;
         }
         result.rows.forEach((row) => {
-          const { col_id, title, routeName, item_id, name, price, imageUrl } = row;
+          const { col_id, title, routeName, item_id, name, price, imageurl } = row;
           data.push({
             col_id,
             title,
@@ -40,7 +40,7 @@ export const getCollections = () => {
             item_id,
             name,
             price,
-            imageUrl,
+            imageurl,
           });
         });
         resolve(data);

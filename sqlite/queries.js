@@ -1,6 +1,6 @@
 
 export const COLLECTIONS = `
-    SELECT c.id AS col_id, c.title, i.id AS item_id, i.name, i.price, i.imageUrl
+    SELECT c.id AS col_id, c.title, i.id AS item_id, i.name, i.price, i.imageurl
     FROM collections c
     JOIN items i ON i.collection_id = c.id
     ORDER BY c.id, c.title, i.name;
